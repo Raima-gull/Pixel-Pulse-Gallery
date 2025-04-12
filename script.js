@@ -21,10 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickTimer = null;
     const originalBtnHTML = uploadBtn.innerHTML;
 
-    // Initialize
     loadImages();
 
-    // Event Listeners
     fileInput.addEventListener('change', handleFileUpload);
     closeBtn.addEventListener('click', closeModal);
     prevBtn.addEventListener('click', showPrevImage);
@@ -34,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.addEventListener('keydown', handleKeyDown);
 
-    // Upload icon event listeners
     cameraUpload.addEventListener('click', () => {
         alert('Camera upload functionality would go here');
     });
@@ -42,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     folderUpload.addEventListener('click', () => {
         fileInput.webkitdirectory = true;
         fileInput.click();
-        fileInput.webkitdirectory = false; // Reset after click
+        fileInput.webkitdirectory = false; 
     });
     
     urlUpload.addEventListener('click', () => {
@@ -52,12 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add drag and drop events for the entire document
     document.addEventListener('dragover', handleDocumentDragOver);
     document.addEventListener('dragleave', handleDocumentDragLeave);
     document.addEventListener('drop', handleDocumentDrop);
 
-    // Add drag and drop events for the gallery
     gallery.addEventListener('dragover', handleGalleryDragOver);
     gallery.addEventListener('dragleave', handleGalleryDragLeave);
     gallery.addEventListener('drop', handleGalleryDrop);
@@ -105,10 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     caption: file.name.replace(/\.[^/.]+$/, "")
                 };
 
-                // Insert at specific position if one was selected
                 if (insertPosition !== null) {
                     images.splice(insertPosition, 0, newImage);
-                    insertPosition = null; // Reset after insertion
+                    insertPosition = null; 
                 } else {
                     images.push(newImage);
                 }
@@ -122,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         uploadBtn.innerHTML = originalBtnHTML;
                         uploadBtn.disabled = false;
-                        fileInput.value = ''; // Reset file input
+                        fileInput.value = '';
                     }, 2000);
                 }
             };
@@ -133,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (loadedCount === files.length) {
                     uploadBtn.innerHTML = originalBtnHTML;
                     uploadBtn.disabled = false;
-                    fileInput.value = ''; // Reset file input
+                    fileInput.value = ''; 
                 }
             };
             
@@ -145,7 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
         uploadBtn.disabled = true;
         
-        // Create a temporary image to check if the URL is valid
         const img = new Image();
         img.onload = function() {
             const newImage = {
@@ -218,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 makeCaptionEditable(captionElement, image);
             });
 
-            // Drag events
             galleryItem.addEventListener('dragstart', handleDragStart);
             galleryItem.addEventListener('dragend', handleDragEnd);
             galleryItem.addEventListener('dragover', handleItemDragOver);
@@ -226,7 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
             galleryItem.addEventListener('dragleave', handleItemDragLeave);
             galleryItem.addEventListener('drop', handleItemDrop);
 
-            // Click to view in modal
             galleryItem.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('delete-btn') && 
                     !e.target.classList.contains('caption') &&
@@ -244,7 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (clickCount === 2) {
                         clearTimeout(clickTimer);
                         clickCount = 0;
-                        // Double click action (none currently)
                     }
                 }
             });
@@ -291,7 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
             image.caption = element.textContent;
             saveImages();
             
-            // Update modal caption if this image is currently displayed
             if (modal.classList.contains('active') && 
                 images[currentImageIndex].id === image.id) {
                 modalCaption.textContent = image.caption;
@@ -317,9 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         e.stopPropagation();
         
-        // Only create drop zone if we're dragging files (not gallery items)
         if (e.dataTransfer.types.includes('Files')) {
-            // Create drop zone if it doesn't exist
             if (!dropZone) {
                 dropZone = document.createElement('div');
                 dropZone.className = 'drop-zone';
@@ -356,14 +343,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Gallery-specific drag and drop for file upload
     function handleGalleryDragOver(e) {
         e.preventDefault();
         e.stopPropagation();
         
-        // Only create drop zone if we're dragging files (not gallery items)
         if (e.dataTransfer.types.includes('Files')) {
-            // Create drop zone if it doesn't exist
             if (!dropZone) {
                 dropZone = document.createElement('div');
                 dropZone.className = 'drop-zone';
@@ -400,7 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Item drag and drop for reordering
     function handleDragStart(e) {
         draggedItem = this;
         this.classList.add('dragging');
@@ -437,7 +420,6 @@ document.addEventListener('DOMContentLoaded', () => {
         this.classList.remove('drag-over');
         
         if (draggedItem !== this) {
-            // Swap DOM elements
             const galleryItems = Array.from(gallery.querySelectorAll('.gallery-item'));
             const fromIndex = galleryItems.indexOf(draggedItem);
             const toIndex = galleryItems.indexOf(this);
@@ -448,7 +430,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 gallery.insertBefore(draggedItem, this);
             }
             
-            // Update the images array order
             const movedItem = images.splice(fromIndex, 1)[0];
             images.splice(toIndex, 0, movedItem);
             saveImages();
