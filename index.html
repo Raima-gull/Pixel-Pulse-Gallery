@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelPulse Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PixelPulse Gallery</h1>
+            <p class="subtitle">Dive into the art of transformation, where every image tells a story worth exploring.</p>
+        </header>
+
+        <div class="upload-area">
+            <button class="upload-btn">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Upload Images
+                <input type="file" id="file-input" accept="image/*" multiple>
+            </button>
+            
+            <div class="upload-options">
+                <div class="upload-icon" id="camera-upload" title="Take a photo">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <div class="upload-icon" id="folder-upload" title="Upload from folder">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <div class="upload-icon" id="url-upload" title="Add from URL">
+                    <i class="fas fa-link"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="gallery-container">
+            <h2 class="gallery-title">
+                <i class="fas fa-camera-retro"></i>
+                Your Visual Collection
+            </h2>
+            <div class="gallery-wrapper">
+                <div class="gallery" id="gallery">
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <p>Your gallery is empty. Upload some images to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img class="modal-img" id="modal-img" src="" alt="" style="height: 500px;width: 800px;">
+            <div class="modal-caption" id="modal-caption"></div>
+            <button class="close-btn" id="close-btn">&times;</button>
+            <button class="nav-btn prev-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="nav-btn next-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <script src="./script.js">
+    
+    </script>
+</body>
+</html>

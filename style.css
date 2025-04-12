@@ -1,0 +1,438 @@
+:root {
+    --primary: #4361ee;
+    --secondary: #3a0ca3;
+    --accent: #fd0072;
+    --light: #f8f9fa;
+    --error: #ff3860;
+    --success: #28a745;
+    --neon: #00ffdd;
+    --caption-bg: rgba(0, 0, 0, 0.5);
+    --drop-zone-bg: rgba(67, 97, 238, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', system-ui, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: var(--light);
+    line-height: 1.6;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, var(--neon), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    letter-spacing: -1px;
+    position: relative;
+    display: inline-block;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, var(--neon), var(--accent));
+    border-radius: 3px;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s ease;
+}
+
+h1:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.upload-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.upload-btn {
+    position: relative;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.upload-btn:hover {
+    transform: translateY(-3px);
+}
+
+.upload-options {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.upload-icon {
+    font-size: 1.5rem;
+    color: var(--neon);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-icon:hover {
+    transform: scale(1.1);
+    color: var(--accent);
+}
+
+#file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+}
+
+.gallery-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.gallery-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.gallery-title i {
+    color: var(--neon);
+}
+
+.gallery-wrapper {
+    max-height: 800px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    min-height: 200px;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-item.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    box-shadow: 0 0 20px rgba(0, 245, 213, 0.5);
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-img-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--caption-bg);
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.caption.editable {
+    cursor: text;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--error);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.gallery-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.drop-zone {
+    position: relative;
+    border: 2px dashed var(--primary);
+    border-radius: 12px;
+    background-color: var(--drop-zone-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    min-height: 100px;
+    grid-column: 1 / -1;
+}
+
+.drop-zone::before {
+    content: 'Drop images here';
+    color: var(--light);
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.drop-zone.active {
+    border-color: var(--neon);
+    background-color: rgba(0, 255, 221, 0.1);
+}
+
+.drop-zone.active::before {
+    content: 'Release to add images';
+    color: var(--neon);
+    opacity: 1;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-img {
+    max-width: 500px;
+    max-height: 800px;
+    border-radius: 8px;
+}
+
+.close-btn, .nav-btn {
+    position: absolute;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.close-btn {
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    background-color: var(--error);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background-color: #ff144d;
+    transform: rotate(90deg);
+}
+
+.nav-btn {
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.nav-btn:hover {
+    background-color: var(--primary);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn {
+    left: 20px;
+}
+
+.next-btn {
+    right: 20px;
+}
+
+.modal-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--caption-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    max-width: 80%;
+    text-align: center;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    grid-column: 1 / -1;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--neon);
+}
+
+.insert-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--success);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.gallery-item:hover .insert-btn {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}
+
+.gallery-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+}
